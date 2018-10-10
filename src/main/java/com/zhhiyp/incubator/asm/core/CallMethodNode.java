@@ -11,7 +11,10 @@ import java.util.Set;
  */
 public class CallMethodNode {
 
-	private final Set<String> parentSet = new HashSet<>();
+	//methodNode之间直接维持父子关系
+	private final Set<CallMethodNode> parentMethods = new HashSet<>();
+	private final Set<CallMethodNode> childMethods = new HashSet<>();
+	//根据方法内操作指令记录调用的方法
 	private final Set<String> childSet = new HashSet<>();
 
 	private String methodSig;
@@ -24,8 +27,12 @@ public class CallMethodNode {
 		this.className = className;
 	}
 
-	public Set<String> getParentSet() {
-		return parentSet;
+	public Set<CallMethodNode> getParentMethods() {
+		return parentMethods;
+	}
+
+	public Set<CallMethodNode> getChildMethods() {
+		return childMethods;
 	}
 
 	public Set<String> getChildSet() {

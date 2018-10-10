@@ -33,14 +33,15 @@ public class SourceMethodParser {
 
 		if (cn.methods != null && cn.methods.size() > 0) {
 			for (MethodNode mn : cn.methods) {
-				//记录该类的method
-				CallMethodNode cMethodNode = new CallMethodNode(mn.name + "#" + mn.desc, cn.name);
-				callGraph.putMethod(cn.name, mn.name + "#" + mn.desc, cMethodNode);
-				cMethodNode.setMethodNode(mn);
 
 				if (mn.instructions.size() == 0 || "<clinit>".equals(mn.name)) {
 					continue;
 				}
+
+				//记录该类的method
+				CallMethodNode cMethodNode = new CallMethodNode(mn.name + "#" + mn.desc, cn.name);
+				callGraph.putMethod(cn.name, mn.name + "#" + mn.desc, cMethodNode);
+				cMethodNode.setMethodNode(mn);
 
 				ListIterator<AbstractInsnNode> iterator = mn.instructions.iterator();
 				while (iterator.hasNext()) {

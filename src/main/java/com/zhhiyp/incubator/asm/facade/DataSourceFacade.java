@@ -17,9 +17,8 @@ public class DataSourceFacade {
 	public static void main(String[] args) {
 		String projectRoot = "D:\\workspace\\bilibiliCrawl\\app\\target\\classes";
 		buildSource(projectRoot);
-		CallGraph callGraph = CallGraph.getInstance();
 		//最终建立被调用的关系
-		MethodLinker.buildBeInvokedRelation(callGraph);
+		CallGraph callGraph = MethodLinker.buildBeInvokedRelation(CallGraph.getInstance());
 	}
 
 	//传入一个工程路径

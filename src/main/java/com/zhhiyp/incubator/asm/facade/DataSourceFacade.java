@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
 public class DataSourceFacade {
 
 	public static void main(String[] args) {
-		String projectRoot = "D:\\workspace\\bilibiliCrawl\\app\\target\\classes";
+		String projectRoot = "D:\\workspace\\github-workspace\\leetcode_drift\\out";
 		buildSource(projectRoot);
 		//最终建立被调用的关系
 		CallGraph callGraph = MethodLinker.buildBeInvokedRelation(CallGraph.getInstance());

@@ -1,5 +1,6 @@
 package com.zhhiyp.incubator.asm.core;
 
+import jdk.internal.org.objectweb.asm.tree.ClassNode;
 import jdk.internal.org.objectweb.asm.tree.MethodNode;
 
 import java.util.HashSet;
@@ -21,6 +22,8 @@ public class CallMethodNode {
 	private String className;
 
 	private MethodNode methodNode;
+	//考虑到接口,抽象类需要实现类去调用该方法,需要父子关系统计
+	private ClassNode classNode;
 
 	public CallMethodNode(String methodSig, String className) {
 		this.methodSig = methodSig;
@@ -61,5 +64,13 @@ public class CallMethodNode {
 
 	public void setMethodNode(MethodNode methodNode) {
 		this.methodNode = methodNode;
+	}
+
+	public ClassNode getClassNode() {
+		return classNode;
+	}
+
+	public void setClassNode(ClassNode classNode) {
+		this.classNode = classNode;
 	}
 }

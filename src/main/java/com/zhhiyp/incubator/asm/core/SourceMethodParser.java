@@ -43,6 +43,11 @@ public class SourceMethodParser {
 				//TODO 通过classNode的innerClasses集合获得InnerClassNode,获得内部类全包名类名,和已注册的类进行关联
 				//如果是类加载器先加载全部jar和class,就只需要以内部类的name去loadClass,只是方式不同.取决于如何读取class
 				List<InnerClassNode> innerClasses = cn.innerClasses;
+				for (InnerClassNode innerClass : innerClasses) {
+					if(innerClass.name.equals(cn.innerClasses)){
+						//添加新方法 parse
+					}
+				}
 				CallMethodNode cMethodNode = new CallMethodNode(mn.name + "#" + mn.desc, cn.name);
 				callGraph.putMethod(cn.name, mn.name + "#" + mn.desc, cMethodNode);
 				cMethodNode.setMethodNode(mn);

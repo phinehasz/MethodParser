@@ -41,8 +41,12 @@ public class MethodLinker {
 						methodParentNode.getChildMethods().add(beInvokedNode);
 					}else {
 						//不是本工程类
-						//TODO 虚拟方法节点,例如数据流想知道工程哪里调用过List集合的add,所以虚拟该节点,但其childMethods是空.只有parent
-
+						//虚拟方法节点,例如数据流想知道工程哪里调用过List集合的add,所以虚拟该节点,但其childMethods是空.只有parent
+						CallMethodNode virtualMethod = new CallMethodNode(invokeMethodSig,ownerName);
+						callGraph.putVirtualMethod(ownerName,invokeMethodSig,virtualMethod);
+						virtualMethod.getParentMethods().add(methodParentNode);
+						//子添加到父的childMethods
+						methodParentNode.getChildMethods().add(virtualMethod);
 
 					}
 				});

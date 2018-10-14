@@ -14,6 +14,7 @@ public class CallGraph {
 	 * methodSignature = methodName + # + desc
 	 */
 	private Map<String, Map<String,CallMethodNode>> invokeMap = new HashMap<>();
+	private Map<String, Map<String,CallMethodNode>> virtualInvokeMap = new HashMap<>();
 
 	private static CallGraph callGraph = new CallGraph();
 
@@ -36,5 +37,12 @@ public class CallGraph {
 			putClass(className);
 		}
 		invokeMap.get(className).put(methodSig,methodNode);
+	}
+
+	public void putVirtualMethod(String className,String methodSig,CallMethodNode methodNode){
+		if(!virtualInvokeMap.containsKey(className)){
+			virtualInvokeMap.put(className,new HashMap<>());
+		}
+		virtualInvokeMap.get(className).put(methodSig,methodNode);
 	}
 }

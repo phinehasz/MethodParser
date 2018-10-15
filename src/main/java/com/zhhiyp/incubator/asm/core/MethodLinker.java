@@ -27,11 +27,7 @@ public class MethodLinker {
 							if ("ordinal#()I".equals(invokeMethodSig)) {
 								return;
 							} else {
-								//如果是子类对象调用了父类方法,则在子类里注册一个该方法
-								//该子类的'新'方法有向上调用,无向下调用
-								//该方法的向下调用,其实是去看该父类的对应方法
-								//如果父类非本工程类,则该方法链路只能是找向上调用者.
-								beInvokedNode = new CallMethodNode(invokeMethodSig,ownerName);
+								//TODO 找父类
 								invokeMap.get(ownerName).put(invokeMethodSig,beInvokedNode);
 							}
 						}

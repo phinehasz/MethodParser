@@ -28,6 +28,7 @@ public class SourceMethodParser {
 
 		//记录该类
 		callGraph.putClass(cn.name);
+		callGraph.putClasSNode(cn.name,cn);
 
 		if (cn.methods != null && cn.methods.size() > 0) {
 			for (MethodNode mn : cn.methods) {

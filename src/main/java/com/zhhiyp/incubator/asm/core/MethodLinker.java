@@ -1,5 +1,7 @@
 package com.zhhiyp.incubator.asm.core;
 
+import jdk.internal.org.objectweb.asm.tree.ClassNode;
+
 import java.util.Map;
 
 /**
@@ -27,27 +29,44 @@ public class MethodLinker {
 							if ("ordinal#()I".equals(invokeMethodSig)) {
 								return;
 							} else {
-								//TODO 找父类
-								invokeMap.get(ownerName).put(invokeMethodSig,beInvokedNode);
+								//search in superClass
+								ClassNode classNode = callGraph.getClassNode(ownerName);
+								if(classNode.superName != null && !"java/lang/Object".equals(classNode.superName)){
+									beInvokedNode = invokeMap.get(classNode.superName).get(invokeMethodSig);
+									if(beInvokedNode == null){
+										//can't happen unless superClass hasn't been recorded
+										//virtual supperClass
+										virtualAndLinkNode(callGraph,methodParentNode,classNode.superName,invokeMethodSig);
+									}else{
+										link(methodParentNode, beInvokedNode);
+										return;
+									}
+								}
+
 							}
 						}
-						//父添加到子的parentMethods
-						beInvokedNode.getParentMethods().add(methodParentNode);
-						//子添加到父的childMethods
-						methodParentNode.getChildMethods().add(beInvokedNode);
+						link(methodParentNode, beInvokedNode);
 					}else {
 						//不是本工程类
 						//虚拟方法节点,例如数据流想知道工程哪里调用过List集合的add,所以虚拟该节点,但其childMethods是空.只有parent
-						CallMethodNode virtualMethod = new CallMethodNode(invokeMethodSig,ownerName);
-						callGraph.putVirtualMethod(ownerName,invokeMethodSig,virtualMethod);
-						virtualMethod.getParentMethods().add(methodParentNode);
-						//子添加到父的childMethods
-						methodParentNode.getChildMethods().add(virtualMethod);
-
+						virtualAndLinkNode(callGraph, methodParentNode, ownerName, invokeMethodSig);
 					}
 				});
 			});
 		});
 		return callGraph;
+	}
+
+	private static void virtualAndLinkNode(CallGraph callGraph, CallMethodNode methodParentNode, String ownerName, String invokeMethodSig) {
+		CallMethodNode virtualMethod = new CallMethodNode(invokeMethodSig,ownerName);
+		callGraph.putVirtualMethod(ownerName,invokeMethodSig,virtualMethod);
+		link(methodParentNode, virtualMethod);
+	}
+
+	private static void link(CallMethodNode methodParentNode, CallMethodNode beInvokedNode) {
+		//父添加到子的parentMethods
+		beInvokedNode.getParentMethods().add(methodParentNode);
+		//子添加到父的childMethods
+		methodParentNode.getChildMethods().add(beInvokedNode);
 	}
 }

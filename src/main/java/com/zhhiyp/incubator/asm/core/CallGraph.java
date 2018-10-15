@@ -1,5 +1,7 @@
 package com.zhhiyp.incubator.asm.core;
 
+import jdk.internal.org.objectweb.asm.tree.ClassNode;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +16,7 @@ public class CallGraph {
 	 * methodSignature = methodName + # + desc
 	 */
 	private Map<String, Map<String,CallMethodNode>> invokeMap = new HashMap<>();
+	private Map<String, ClassNode> classMap = new HashMap<>();
 	private Map<String, Map<String,CallMethodNode>> virtualInvokeMap = new HashMap<>();
 
 	private static CallGraph callGraph = new CallGraph();
@@ -44,5 +47,13 @@ public class CallGraph {
 			virtualInvokeMap.put(className,new HashMap<>());
 		}
 		virtualInvokeMap.get(className).put(methodSig,methodNode);
+	}
+
+	public void putClasSNode(String className,ClassNode classNode){
+		classMap.put(className,classNode);
+	}
+
+	public ClassNode getClassNode(String className){
+		return classMap.get(className);
 	}
 }

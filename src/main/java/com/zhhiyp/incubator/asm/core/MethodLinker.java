@@ -45,7 +45,6 @@ public class MethodLinker {
 
 							}
 						}
-						link(methodParentNode, beInvokedNode);
 					}else {
 						//不是本工程类
 						//虚拟方法节点,例如数据流想知道工程哪里调用过List集合的add,所以虚拟该节点,但其childMethods是空.只有parent
